@@ -4,76 +4,321 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>43 Games LLC</title>
+  <meta name="description" content="43 Games LLC — Independent mobile game studio. Creators of STACK&SMASH." />
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #0f0f14;
-      color: #ffffff;
+    :root{
+      --bg0:#070813;
+      --bg1:#0b1030;
+      --card:#0f1638cc;
+      --border: rgba(255,255,255,.08);
+      --text:#f4f6ff;
+      --muted: rgba(244,246,255,.72);
+      --muted2: rgba(244,246,255,.55);
+      --accent1:#7c4dff;
+      --accent2:#35d7ff;
+      --accent3:#ff5fd7;
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --radius: 22px;
     }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 80px 24px;
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body{
+      margin:0;
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(124,77,255,.25), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(53,215,255,.18), transparent 60%),
+        radial-gradient(900px 500px at 50% 90%, rgba(255,95,215,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
     }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
+
+    /* Subtle animated “aurora” */
+    .aurora{
+      position: fixed;
+      inset: -20vh -20vw;
+      pointer-events:none;
+      filter: blur(40px);
+      opacity: .55;
+      background:
+        radial-gradient(40% 30% at 30% 30%, rgba(124,77,255,.35), transparent 60%),
+        radial-gradient(35% 30% at 70% 40%, rgba(53,215,255,.30), transparent 60%),
+        radial-gradient(40% 35% at 55% 70%, rgba(255,95,215,.22), transparent 60%);
+      animation: drift 14s ease-in-out infinite alternate;
+      transform: translate3d(0,0,0);
     }
-    h2 {
-      font-size: 1.5rem;
-      margin-top: 3rem;
+    @keyframes drift{
+      0%   { transform: translate(-2%, -1%) scale(1.02); }
+      100% { transform: translate(2%, 1%) scale(1.06); }
     }
-    p {
+
+    /* Starfield (lightweight, no JS) */
+    .stars, .stars2{
+      position: fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.55) 45%, transparent 46%),
+        radial-gradient(1px 1px at 78% 22%, rgba(255,255,255,.45) 45%, transparent 46%),
+        radial-gradient(1px 1px at 55% 64%, rgba(255,255,255,.35) 45%, transparent 46%),
+        radial-gradient(1px 1px at 32% 75%, rgba(255,255,255,.40) 45%, transparent 46%),
+        radial-gradient(1px 1px at 88% 78%, rgba(255,255,255,.30) 45%, transparent 46%),
+        radial-gradient(1px 1px at 20% 45%, rgba(255,255,255,.25) 45%, transparent 46%),
+        radial-gradient(1px 1px at 66% 42%, rgba(255,255,255,.30) 45%, transparent 46%);
+      opacity: .6;
+    }
+    .stars2{
+      opacity:.35;
+      transform: scale(1.2);
+      filter: blur(.2px);
+      animation: twinkle 5.5s ease-in-out infinite alternate;
+    }
+    @keyframes twinkle { from{opacity:.20} to{opacity:.45} }
+
+    .wrap{
+      position: relative;
+      min-height: 100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 72px 18px;
+    }
+
+    .container{
+      width: min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      overflow:hidden;
+      position: relative;
+    }
+
+    /* thin gradient accent line */
+    .card::before{
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+      opacity:.9;
+    }
+
+    .hero{
+      padding: 44px 38px 34px;
+    }
+
+    .badge{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      font-size: .95rem;
+      letter-spacing: .2px;
+    }
+
+    .dot{
+      width: 10px; height: 10px; border-radius: 50%;
+      background: linear-gradient(180deg, var(--accent2), var(--accent1));
+      box-shadow: 0 0 22px rgba(53,215,255,.35);
+    }
+
+    h1{
+      margin: 16px 0 10px;
+      font-size: clamp(2.2rem, 5vw, 3.3rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .tagline{
       font-size: 1.1rem;
-      line-height: 1.6;
-      color: #d0d0d0;
+      color: var(--muted);
+      margin-bottom: 18px;
+      max-width: 54ch;
     }
-    .tagline {
-      font-size: 1.25rem;
-      color: #9ad1ff;
-      margin-bottom: 2rem;
+
+    .sub{
+      color: var(--muted2);
+      line-height: 1.7;
+      font-size: 1.05rem;
+      max-width: 68ch;
+      margin: 0 0 22px;
     }
-    .footer {
-      margin-top: 5rem;
-      font-size: 0.9rem;
-      color: #888;
+
+    .actions{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
     }
-    a {
-      color: #9ad1ff;
-      text-decoration: none;
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      text-decoration:none;
+      color: var(--text);
+      background: rgba(255,255,255,.06);
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      font-weight: 600;
     }
-    a:hover {
-      text-decoration: underline;
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.22);
+    }
+    .btn.primary{
+      border: none;
+      background: linear-gradient(90deg, rgba(124,77,255,.95), rgba(53,215,255,.85));
+      box-shadow: 0 10px 30px rgba(53,215,255,.18);
+    }
+    .btn.primary:hover{
+      box-shadow: 0 14px 40px rgba(53,215,255,.22);
+    }
+
+    .mini{
+      padding: 22px 22px 16px;
+    }
+
+    h2{
+      margin: 8px 0 10px;
+      font-size: 1.15rem;
+      letter-spacing: .2px;
+      color: rgba(244,246,255,.92);
+    }
+
+    .pill{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      margin-top: 10px;
+    }
+
+    .pill strong{ display:block; margin-bottom: 4px; }
+    .pill p{ margin:0; color: var(--muted2); line-height: 1.6; font-size: 1rem; }
+
+    .icon{
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.10);
+      display:grid;
+      place-items:center;
+      flex: 0 0 auto;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.15);
+    }
+
+    .footer{
+      margin-top: 18px;
+      font-size: .92rem;
+      color: rgba(244,246,255,.40);
+      padding: 0 6px;
+    }
+
+    @media (max-width: 860px){
+      .container{ grid-template-columns: 1fr; }
+      .hero{ padding: 38px 22px 26px; }
+      .mini{ padding: 18px 18px 14px; }
+    }
+
+    /* Accessibility: reduce motion if user prefers */
+    @media (prefers-reduced-motion: reduce){
+      .aurora, .stars2 { animation: none !important; }
+      .btn { transition: none !important; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>43Games LLC</h1>
-    <div class="tagline">Independent mobile game studio</div>
+  <div class="aurora"></div>
+  <div class="stars"></div>
+  <div class="stars2"></div>
 
-    <p>
-      43Games LLC is an independent game development studio focused on creating
-      simple, engaging, and highly replayable mobile games.
-    </p>
+  <main class="wrap">
+    <div class="container">
 
-    <h2>Our Work</h2>
-    <p>
-      <strong>STACK&SMASH</strong> is our debut title — a fast-paced physics stacking
-      game built for short sessions and competitive play.
-    </p>
+      <!-- LEFT: Hero -->
+      <section class="card hero">
+        <div class="badge"><span class="dot"></span> Texas-based • Indie Studio</div>
 
-    <h2>Contact</h2>
-    <p>
-      For support, business inquiries, or press:<br />
-      <a href="mailto:43games777@gmail.com">43games777@gmail.com</a>
-    </p>
+        <h1>43 Games LLC</h1>
+        <div class="tagline">Independent mobile game studio</div>
 
-    <div class="footer">
-      © 2025 43 Games LLC. All rights reserved.
+        <p class="sub">
+          We build simple, satisfying, and highly replayable mobile games —
+          fast to learn, hard to master, and made for short sessions.
+        </p>
+
+        <div class="actions">
+          <a class="btn primary" href="mailto:43games777@gmail.com">Email Us</a>
+          <a class="btn" href="#work">Our Work</a>
+          <a class="btn" href="#contact">Contact</a>
+        </div>
+
+        <div class="footer">© 2025 43 Games LLC. All rights reserved.</div>
+      </section>
+
+      <!-- RIGHT: Info cards -->
+      <aside class="card mini" id="work">
+        <h2>Our Work</h2>
+
+        <div class="pill">
+          <div class="icon">🎮</div>
+          <div>
+            <strong>STACK&SMASH</strong>
+            <p>
+              A fast-paced physics stacking game built for short sessions and competitive play.
+            </p>
+          </div>
+        </div>
+
+        <div class="pill" id="contact">
+          <div class="icon">✉️</div>
+          <div>
+            <strong>Contact</strong>
+            <p>
+              Support, business inquiries, or press:<br />
+              <a href="mailto:43games777@gmail.com" style="color: var(--accent2); font-weight: 700;">43games777@gmail.com</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="pill">
+          <div class="icon">🧾</div>
+          <div>
+            <strong>For Apple verification</strong>
+            <p>
+              This site is the official landing page for 43 Games LLC.
+            </p>
+          </div>
+        </div>
+
+        <div class="footer">Made with love + late-night builds.</div>
+      </aside>
+
     </div>
-  </div>
+  </main>
 </body>
 </html>
